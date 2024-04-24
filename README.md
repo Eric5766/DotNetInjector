@@ -1,6 +1,14 @@
 # DotNetInjector
 
-C++ injector for injecting managed code into unmanaged applications.
+C++ injector for injecting managed code into unmanaged applications. 
+
+Works by:
+
+- Injects bootstrapper.dll into the target process - As we are loading another .dll from here the entrypoint is empty due to holding the loader lock.
+- Grabs the offset for the bootstrapper's ImplantDotNetAssembly function
+- Calls it, passing in the arguments given to the injector
+- Bootstrapper loads the appropriate .net CLR in the process then calls on it to run the program we want to inject.
+- Inject program then makes a call to unload the bootstrapper.
 
 Capable of injecting both .Net Framework 4 and modern .NET 6/7/8 code.  Takes several command line arguments:
 
